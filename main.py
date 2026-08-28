@@ -1,6 +1,11 @@
 import questionary
-import requests
-from bs4 import BeautifulSoup
+from search_gpu import search_gpu
+from search_price import search_price
+from curl_cffi import requests
+from gpu import Gpu
+
+session = requests.Session( impersonate="chrome150")
+
 
 def ask_user() -> tuple[str, list[str]]:
     gpu_name = ""
@@ -16,34 +21,15 @@ def ask_user() -> tuple[str, list[str]]:
         ).ask()
     return gpu_name, options
 
-def search_gpu(gpu_name: str) -> str:
-    r = requests.get(f"https://technical.city/pt/search",params={"q":gpu_name})
-    
-    if r.status_code != 200:
-        print(r.status_code)
-        exit("Unable to fetch data.")
-    
-    soup = BeautifulSoup(r.text, "html.parser")
 
-    gpus_found = list(map(lambda x: (
-        x.get_text(strip=True)
-    ), soup.select("strong.type")))
-
-    if len(gpus_found) == 0:
-        print("GPU Not found.")
-        exit(0)
-    
-    selected_gpu = gpus_found[0]
-    
-    if len(gpus_found) > 1:
-        selected_gpu:str = questionary.select("Choose your GPU: ", choices=gpus_found).ask()
-    
-    return selected_gpu
-        
 def main():
-   gpu_name, options = ask_user()
-   selected_gpu = search_gpu(gpu_name)
+#    gpu_name, options = ask_user()
+#    selected_gpu = search_gpu(session, gpu_name)
    
-   
-   
+#    if "Price" in options:
+        # search_price(gpu_name)
+    selected_gpu = Gpu("RX 9060")
+    search_price(session, selected_gpu)
+
+
 main()
