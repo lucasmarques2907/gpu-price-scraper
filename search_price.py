@@ -64,11 +64,7 @@ def parse_products(html: str, gpu: Gpu) -> tuple[list[Gpu], bool]:
 
         title = title_el.get_text()
 
-        if gpu.name not in title:
-            continue
-        if "XT" not in gpu.name and "XT" in title.upper():
-            continue
-        if "TI" not in gpu.name and "TI" in title.upper():
+        if not matches(gpu.name, title):
             continue
 
         match_pix = re.search(price_regex, pix_el.get_text())
@@ -94,7 +90,7 @@ def parse_max_page(html: str) -> int:
 
 def get_lowest_price(gpus :list[Gpu]) -> Gpu:
     if len(gpus) == 0:
-        exit("Nenhuma GPU encontrada.")
+        raise ValueError("Nenhuma GPU encontrada.")
     
     lowest_price = float("inf")
     gpu_to_return = gpus[0]
@@ -108,3 +104,7 @@ def get_lowest_price(gpus :list[Gpu]) -> Gpu:
 
 def parse_price(text: str) -> float:
     return float(text.replace(",", ""))
+
+def matches(gpu_name: str, title: str) -> bool:
+    t = title.upper().replace(" ", "")
+    return all(token in t for token in gpu_name.upper().split())
