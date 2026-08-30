@@ -6,7 +6,7 @@ def search_gpu(session: Session, gpu_name: str) -> str:
     r = session.get(f"https://technical.city/pt/search",params={"q":gpu_name})
     
     if r.status_code != 200:
-        exit("Unable to fetch data.")
+        exit("Falha ao coletar dados.")
     
     soup = BeautifulSoup(r.text, "html.parser")
 
@@ -15,7 +15,7 @@ def search_gpu(session: Session, gpu_name: str) -> str:
     ), soup.select("strong.type")))
 
     if len(gpus_found) == 0:
-        exit("GPU Not found.")
+        exit("GPU não encontrada.")
     
     selected_gpu = gpus_found[0]
     

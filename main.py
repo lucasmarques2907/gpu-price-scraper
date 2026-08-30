@@ -6,30 +6,18 @@ from gpu import Gpu
 
 session = requests.Session( impersonate="chrome150")
 
-
-def ask_user() -> tuple[str, list[str]]:
+def ask_user() -> str:
     gpu_name = ""
     while len(gpu_name) == 0:
-        gpu_name = questionary.text("What GPU are you looking for? (ex: RX 9070 XT)").ask()
-    
-    options = questionary.checkbox(
-        "What kind of information do you want to know?", choices=[
-            "Specifications",
-            "Price",
-            "Comparison"
-            ]
-        ).ask()
-    return gpu_name, options
+        gpu_name = questionary.text("Qual GPU está procurando? (ex: RX 9070 XT)").ask()
+
+    return gpu_name
 
 
 def main():
-#    gpu_name, options = ask_user()
-#    selected_gpu = search_gpu(session, gpu_name)
-   
-#    if "Price" in options:
-        # search_price(gpu_name)
-    selected_gpu = Gpu("RX 9060")
-    search_price(session, selected_gpu)
-
+    gpu_name = ask_user()
+    selected_gpu = search_gpu(session, gpu_name)
+    gpu = search_price(session, Gpu(selected_gpu))
+    print(gpu)
 
 main()
