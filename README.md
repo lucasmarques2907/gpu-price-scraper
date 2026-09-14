@@ -1,10 +1,14 @@
-# gpu-price-scraper
-
 ## Sobre
+
 Este projeto é um web scraper feito para procurar placas de vídeo com o menor preço possível nos provedores disponíveis.
 Atualmente o projeto conta com somente um provedor [Pichau](https://www.pichau.com.br/), mas pretendo expandir futuramente, além de adicionar outras funcionalidades como especificações do modelo e comparação com outras placas de vídeo.
 
+## Tech Stack
+
+- Python @ 3.13
+
 ## Requisitos
+
 Python 3.9 ou superior.
 
 ## Instalação
